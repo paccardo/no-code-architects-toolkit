@@ -5,7 +5,3 @@ ffmpeg-python
 gunicorn
 jsonschema
 Pillow
-# Adding back the missing logic pieces without the 2GB bloat
-openai-whisper
-playwright
-torch --index-url https://download.pytorch.org/whl/cpu
