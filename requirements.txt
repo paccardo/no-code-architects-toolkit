@@ -5,4 +5,7 @@ ffmpeg-python
 gunicorn
 jsonschema
 Pillow
-# We are temporarily removing Whisper to get your server live
+# Adding back the missing logic pieces without the 2GB bloat
+openai-whisper
+playwright
+torch --index-url https://download.pytorch.org/whl/cpu
