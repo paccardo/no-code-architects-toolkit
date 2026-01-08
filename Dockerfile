@@ -1,8 +1,7 @@
 # Base image
 FROM python:3.10-slim
 
-# Install system dependencies and FFmpeg (Pre-built version)
-# We add generic font libraries and essential tools here
+# Install system dependencies and FFmpeg
 RUN apt-get update && apt-get install -y --no-install-recommends \
     ffmpeg \
     fonts-liberation \
@@ -10,56 +9,39 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     git \
     && rm -rf /var/lib/apt/lists/*
 
-# Copy fonts into the custom fonts directory
+# Copy fonts and rebuild cache
 COPY ./fonts /usr/share/fonts/custom
-
-# Rebuild the font cache so that fontconfig can see the custom fonts
 RUN fc-cache -f -v
 
 # Set work directory
 WORKDIR /app
 
-# Set environment variable for Whisper cache
-ENV WHISPER_CACHE_DIR="/app/whisper_cache"
-RUN mkdir -p ${WHISPER_CACHE_DIR}
-
-# Copy the requirements file
+# Copy requirements and install
 COPY requirements.txt .
-
-# Install Python dependencies
-# Note: We assume requirements.txt is already cleaned up (CPU-only torch)
 RUN pip install --no-cache-dir --upgrade pip && \
     pip install --no-cache-dir -r requirements.txt
 
-# Create the appuser and give permissions
+# Create appuser and set permissions
 RUN useradd -m appuser && \
     chown -R appuser:appuser /app
 
 # Switch to the appuser
 USER appuser
 
-# Install Playwright Chromium browser as appuser
-RUN playwright install chromium
-
-# Copy the rest of the application code
+# Copy the rest of the application
 COPY --chown=appuser:appuser . .
 
 # Expose the port
 EXPOSE 8080
-
-# Set environment variables
 ENV PYTHONUNBUFFERED=1
 
-# Create the startup script
+# Startup script
 RUN echo '#!/bin/bash\n\
 gunicorn --bind 0.0.0.0:8080 \
-    --workers ${GUNICORN_WORKERS:-2} \
-    --timeout ${GUNICORN_TIMEOUT:-300} \
+    --workers 1 \
+    --timeout 300 \
     --worker-class sync \
-    --keep-alive 80 \
-    --config gunicorn.conf.py \
     app:app' > /app/run_gunicorn.sh && \
     chmod +x /app/run_gunicorn.sh
 
-# Run the shell script
 CMD ["/app/run_gunicorn.sh"]
