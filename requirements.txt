@@ -2,16 +2,7 @@ Flask
 Werkzeug
 requests
 ffmpeg-python
-# Install CPU-only PyTorch (Lightweight)
-torch --index-url https://download.pytorch.org/whl/cpu
-torchaudio --index-url https://download.pytorch.org/whl/cpu
-# AI Tools
-openai-whisper
-playwright
-jsonschema
 gunicorn
-# Utilities
-APScheduler
-srt
-psutil
+jsonschema
 Pillow
+# We are temporarily removing Whisper to get your server live
