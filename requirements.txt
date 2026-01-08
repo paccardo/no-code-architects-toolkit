@@ -5,6 +5,8 @@ ffmpeg-python
 gunicorn
 jsonschema
 Pillow
-google-auth
-google-api-python-client
+google-api-core
+google-cloud-core
+google-cloud-storage
 google-cloud-run
+google-auth
