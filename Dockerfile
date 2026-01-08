@@ -35,13 +35,5 @@ COPY --chown=appuser:appuser . .
 EXPOSE 8080
 ENV PYTHONUNBUFFERED=1
 
-# Startup script
-RUN echo '#!/bin/bash\n\
-gunicorn --bind 0.0.0.0:8080 \
-    --workers 1 \
-    --timeout 300 \
-    --worker-class sync \
-    app:app' > /app/run_gunicorn.sh && \
-    chmod +x /app/run_gunicorn.sh
-
-CMD ["gunicorn", "--bind", "0.0.0.0:8080", "--timeout", "300", "app:app"]
+# Start the application directly with Gunicorn
+CMD ["gunicorn", "--bind", "0.0.0.0:8080", "--timeout", "300", "--workers", "1", "app:app"]
