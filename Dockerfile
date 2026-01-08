@@ -1,12 +1,11 @@
 # Base image
 FROM python:3.10-slim
 
-# Install system dependencies and FFmpeg
+# Install only the bare essentials
 RUN apt-get update && apt-get install -y --no-install-recommends \
     ffmpeg \
     fonts-liberation \
     fontconfig \
-    git \
     && rm -rf /var/lib/apt/lists/*
 
 # Copy fonts and rebuild cache
@@ -35,5 +34,5 @@ COPY --chown=appuser:appuser . .
 EXPOSE 8080
 ENV PYTHONUNBUFFERED=1
 
-# Start the application directly with Gunicorn
+# Start the application
 CMD ["gunicorn", "--bind", "0.0.0.0:8080", "--timeout", "300", "--workers", "1", "app:app"]
