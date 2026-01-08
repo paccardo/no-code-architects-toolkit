@@ -44,4 +44,4 @@ gunicorn --bind 0.0.0.0:8080 \
     app:app' > /app/run_gunicorn.sh && \
     chmod +x /app/run_gunicorn.sh
 
-CMD ["/app/run_gunicorn.sh"]
+CMD ["gunicorn", "--bind", "0.0.0.0:8080", "--timeout", "300", "app:app"]
