@@ -5,3 +5,5 @@ ffmpeg-python
 gunicorn
 jsonschema
 Pillow
+google-auth
+google-api-python-client
