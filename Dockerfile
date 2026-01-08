@@ -38,9 +38,6 @@ RUN useradd -m appuser && \
 # Switch to the appuser
 USER appuser
 
-# Download the Whisper model during build to save time later
-RUN python -c "import os; import whisper; whisper.load_model('base')"
-
 # Install Playwright Chromium browser as appuser
 RUN playwright install chromium
 
