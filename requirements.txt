@@ -12,6 +12,4 @@ google-cloud-run
 google-auth
 boto3
 psutil
-openai-whisper
 yt-dlp
-playwright
